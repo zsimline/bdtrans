@@ -1,8 +1,5 @@
-
-
-
-SOURCE_LANG = 'en'
-TARGET_LANG = 'zh'
+DEFAULT_SOURCE = 'en'
+DEFAULT_TARGET = 'zh'
 
 class Code(object):
     zh = 'zh'
@@ -41,9 +38,6 @@ class SourceCode(Code):
 
 class TargetCode(Code):
     pass
-
-
-
 
 
 

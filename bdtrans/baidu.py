@@ -4,23 +4,33 @@ import random
 import urllib
 import hashlib
 import requests
-import config
 import common
 import language
 
+import conf
+from bdtrans.common import get_profile_path
+
 class Translate(object):
-    appid = config.APPID
-    secretkey = config.SECRETKEY
-    api = config.API    
-    source_lang = config.SOURCE_LANG
-    target_lang = config.TARGET_LANG
-    raw = False
+    api = conf.API
+    source_lang = language.DEFAULT_SOURCE
+    target_lang = language.DEFAULT_TARGET
+    show_raw = False
 
     def __init__(self):
-        pass
+        config = None
+        profile = get_profile_path()
+        with open(profile, 'r') as f:
+            config = json.load(f)
+        self.appid = config['APPID']
+        self.secretkey = config['SECRETKEY']
+        if 'source_lang' in config.keys():
+            
+        if 'target_lang' in config.keys():
+            
 
-    def set_raw(self, raw):
-        self.raw = raw
+
+    def set_raw(self, show_raw):
+        self.show_raw = show_raw
 
     def set_source(self, code):
         if hasattr(language.SourceCode, code):
@@ -37,7 +47,6 @@ class Translate(object):
             self.console('Invalid target code.')
             self.console('The following are legal:')
             sys.exit()
-
 
     def set_query(self, words):
         self.query = ' '.join(words)
@@ -68,7 +77,7 @@ class Translate(object):
     def display(self, response):
         content = response.content.decode('UTF-8')
         original = json.loads(content)
-        if self.raw:
+        if self.show_raw:
             self.console(original)
             return None
         try:

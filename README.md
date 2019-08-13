@@ -1,2 +1,2 @@
-# baidu-translator
-Baidu translation command line interface
+# bdtrans
+A library for baidu translation
