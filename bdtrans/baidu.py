@@ -4,16 +4,15 @@ import random
 import urllib
 import hashlib
 import requests
-import common
-import language
 
 import conf
+import common
+import language
 from bdtrans.common import get_profile_path
+
 
 class Translate(object):
     api = conf.API
-    source_lang = language.DEFAULT_SOURCE
-    target_lang = language.DEFAULT_TARGET
     show_raw = False
 
     def __init__(self):
@@ -23,11 +22,8 @@ class Translate(object):
             config = json.load(f)
         self.appid = config['APPID']
         self.secretkey = config['SECRETKEY']
-        if 'source_lang' in config.keys():
-            
-        if 'target_lang' in config.keys():
-            
-
+        self.source_lang = config['SOURCE_LANG']
+        self.target_lang = config['TARGET_LANG']
 
     def set_raw(self, show_raw):
         self.show_raw = show_raw
@@ -38,30 +34,33 @@ class Translate(object):
         else:
             self.console('Invalid source code.')
             self.console('The following are legal:')
-            sys.exit()
 
     def set_target(self, code):
         if hasattr(language.TargetCode, code):
-            self.to_lang = code
+            self.target_lang = code
         else:
             self.console('Invalid target code.')
             self.console('The following are legal:')
-            sys.exit()
 
-    def set_query(self, words):
+    def reverse_lang(self):
+        temp = self.source_lang
+        self.source_lang = self.target_lang
+        self.target_lang = temp
+
+    def _set_query(self, words):
         self.query = ' '.join(words)
 
-    def set_salt(self):
+    def _set_salt(self):
         self.salt = str(random.randint(32768, 65536))
 
-    def set_sign(self):
+    def _set_sign(self):
         sign = '%s%s%s%s' % (self.appid,self.query,
                              self.salt,self.secretkey)
         md5obj = hashlib.md5() 
         md5obj.update(sign.encode('UTF-8'))
         self.sign = md5obj.hexdigest()
 
-    def request(self):
+    def _request(self):
         param = (self.appid,urllib.parse.quote(self.query),
                  self.source_lang,self.to_lang,self.salt,self.sign)
         url = self.api % param
@@ -74,7 +73,7 @@ class Translate(object):
         except KeyboardInterrupt:
             pass
 
-    def display(self, response):
+    def _display(self, response):
         content = response.content.decode('UTF-8')
         original = json.loads(content)
         if self.show_raw:
@@ -87,30 +86,16 @@ class Translate(object):
             self.console('2202 The return value is incorrect')
             self.console(original)
 
-    def package(self, words):
-        self.set_query(words)
-        self.set_salt()
-        self.set_sign()
+    def _package(self, words):
+        self._set_query(words)
+        self._set_salt()
+        self._set_sign()
         
     def translate(self, words):
-        self.package(words)
-        response = self.request()
+        self._package(words)
+        response = self._request()
         if response is not None:
-            self.display(response)
-
-    def repl(self):
-        self.console('Translator Shell')
-        self.console('[Ctrl + \\ to quit]')
-        while True:
-            try:
-                content = input('\n> ')
-            except KeyboardInterrupt:
-                self.console('Good Bye!')
-                sys.exit()
-            if content == '':
-                continue
-            words = content.split(' ')
-            self.translate(words)
+            self._display(response)
 
     def console(self, message, wrap='\n'):
         print(message, end=wrap)

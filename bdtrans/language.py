@@ -1,6 +1,3 @@
-DEFAULT_SOURCE = 'en'
-DEFAULT_TARGET = 'zh'
-
 class Code(object):
     zh = 'zh'
     en = 'en'
@@ -40,8 +37,10 @@ class TargetCode(Code):
     pass
 
 
+DEFAULT_SOURCE_LANG = 'en'
+DEFAULT_TARGET_LANG = 'zh'
 
-LANGDICT = {
+LANGUAGES = {
     'zh':  '中文',
     'en':  '英语',
     'yue': '粤语',

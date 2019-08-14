@@ -39,16 +39,6 @@ def get_parser():
     return parser
 
 
-def print_langs():
-    langs = config.LANGUAGES
-    print('------------------------------')
-    for lang in langs:
-        print('| {:<5}'.format(lang), end='')
-        print('{:>5}'.format('-'), end='')
-        print('{:\u3000>8} |'.format(langs[lang]))
-    print('------------------------------')
-    sys.exit()
-
 def print_help(parser):
     parser.print_help()
     sys.exit()
@@ -57,9 +47,6 @@ def print_help(parser):
 def print_version():
     print(__version__)
     sys.exit()
-
-
-
 
 
 if __name__ == '__main__':

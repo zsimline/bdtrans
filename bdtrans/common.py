@@ -4,7 +4,8 @@ import gettext
 import getpass
 import platform
 
-from bdtrans.conf import PROFILE_PATH
+import language
+from conf import PROFILE_PATH
 
 
 def i18n():
@@ -42,3 +43,14 @@ def get_profile_path():
     if platform['windows']:
         return PROFILE_PATH['windows'] % username
     return PROFILE_PATH['unknowos'] % username
+
+
+def list_langs():
+    langs = language.LANGUAGES
+    print('------------------------------')
+    for lang in langs:
+        print('| {:<5}'.format(lang), end='')
+        print('{:>5}'.format('-'), end='')
+        print('{:\u3000>8} |'.format(langs[lang]))
+    print('------------------------------')
+
