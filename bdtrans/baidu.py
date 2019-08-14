@@ -5,9 +5,8 @@ import urllib
 import hashlib
 import requests
 
-import conf
-import common
-import language
+from bdtrans import conf
+from bdtrans import language
 from bdtrans.common import get_profile_path
 
 
@@ -29,18 +28,10 @@ class Translate(object):
         self.show_raw = show_raw
 
     def set_source(self, code):
-        if hasattr(language.SourceCode, code):
-            self.source_lang = code
-        else:
-            self.console('Invalid source code.')
-            self.console('The following are legal:')
+        self.source_lang = code
 
     def set_target(self, code):
-        if hasattr(language.TargetCode, code):
-            self.target_lang = code
-        else:
-            self.console('Invalid target code.')
-            self.console('The following are legal:')
+        self.target_lang = code
 
     def reverse_lang(self):
         temp = self.source_lang
@@ -48,8 +39,8 @@ class Translate(object):
         self.target_lang = temp
 
     def _set_query(self, words):
-        self.query = ' '.join(words)
-
+        self.query = words
+ 
     def _set_salt(self):
         self.salt = str(random.randint(32768, 65536))
 
@@ -62,14 +53,15 @@ class Translate(object):
 
     def _request(self):
         param = (self.appid,urllib.parse.quote(self.query),
-                 self.source_lang,self.to_lang,self.salt,self.sign)
+                 self.source_lang,self.target_lang,
+                 self.salt,self.sign)
         url = self.api % param
         
         try:
             response = requests.request('GET', url)
             return response
         except ConnectionError:
-            self.console('2201 Network not connected')
+            self._console('2201 Network not connected')
         except KeyboardInterrupt:
             pass
 
@@ -77,25 +69,26 @@ class Translate(object):
         content = response.content.decode('UTF-8')
         original = json.loads(content)
         if self.show_raw:
-            self.console(original)
+            self._console(original)
             return None
         try:
             result = original['trans_result'][0]['dst']
-            self.console(result)
+            self._console(result)
         except KeyError:
-            self.console('2202 The return value is incorrect')
-            self.console(original)
+            self._console('2202 The return value is incorrect')
+            self._console(original)
 
-    def _package(self, words):
+    def _package_words(self, words):
         self._set_query(words)
         self._set_salt()
         self._set_sign()
         
     def translate(self, words):
-        self._package(words)
+        response = None
+        self._package_words(words)
         response = self._request()
         if response is not None:
             self._display(response)
 
-    def console(self, message, wrap='\n'):
+    def _console(self, message, wrap='\n'):
         print(message, end=wrap)

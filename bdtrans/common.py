@@ -4,8 +4,8 @@ import gettext
 import getpass
 import platform
 
-import language
-from conf import PROFILE_PATH
+from bdtrans import language
+from bdtrans.conf import PROFILE_PATH
 
 
 def i18n():
@@ -54,3 +54,22 @@ def list_langs():
         print('{:\u3000>8} |'.format(langs[lang]))
     print('------------------------------')
 
+
+def check_source_code(code):
+    if hasattr(language.SourceCode, code):
+        return True
+    else:
+        print('\nInvalid source code, the following are legal:')
+        list_langs()
+        return False
+
+
+def check_target_code(code):
+    if hasattr(language.TargetCode, code):
+        return True
+    elif code=='auto':
+        print('\nTarget code can not be auto!!!\n')
+    else:
+        print('\nInvalid target code, the following are legal:')
+        list_langs()
+        return False
