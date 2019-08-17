@@ -6,9 +6,3 @@ PROFILE_PATH = {
     'windows': 'C:/Users/%s/AppData/Local/.bdtrans',
     'unknowos': './.bdtrans'
 }
-
-
-
- 
- 
-

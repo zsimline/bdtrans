@@ -6,13 +6,7 @@ import config
 import baidu
 import common
 
-
-__version__ = 'v1.0'
-__author__ = 'Mxsyx'
-__email__ = 'zsimline@163.com'
-
 _ = common.i18n()
-
 
 def get_parser():
     parser = argparse.ArgumentParser(prog='Baidu Translator', add_help=False)
@@ -82,3 +76,20 @@ if __name__ == '__main__':
         print_help(parser)
 
     trans.translate(words)
+
+
+from prompt_toolkit import prompt
+from prompt_toolkit.history import FileHistory
+from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
+from prompt_toolkit.contrib.completers import WordCompleter
+
+SQLCompleter = WordCompleter(['select','update','drop','insert','delete'],ignore_case=True)
+
+
+while True:
+    user_input = prompt('>',
+                        history=FileHistory('history.txt'),
+                        auto_suggest=AutoSuggestFromHistory(),
+                        completer=SQLCompleter,
+                        )
+    print(user_input)

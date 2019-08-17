@@ -4,6 +4,7 @@ import gettext
 import getpass
 import platform
 
+
 from bdtrans import language
 from bdtrans.conf import PROFILE_PATH
 
@@ -59,8 +60,8 @@ def check_source_code(code):
     if hasattr(language.SourceCode, code):
         return True
     else:
-        print('\nInvalid source code, the following are legal:')
-        list_langs()
+        print(('\nInvalid source code! \n\nTry to see which source '
+               'codes are legal with the function bdtrans.list_langs()'))
         return False
 
 
@@ -70,6 +71,6 @@ def check_target_code(code):
     elif code=='auto':
         print('\nTarget code can not be auto!!!\n')
     else:
-        print('\nInvalid target code, the following are legal:')
-        list_langs()
+        print(('\nInvalid target code! \n\nTry to see which target '
+               'codes are legal with the function bdtrans.list_langs()'))
         return False
