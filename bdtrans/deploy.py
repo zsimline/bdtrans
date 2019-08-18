@@ -20,7 +20,7 @@ def setup(appid, secretkey, source_lang, target_lang):
         print('\nYour profile is located at %s.' % _profile)
 
 
-def change_appinfo(appid, secretkey):
+def change_info(appid, secretkey):
     config = None
     with open(_profile, 'r') as f:
         config = json.load(f)
