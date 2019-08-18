@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'bdtrans',
-    version = '0.1.0',
+    version = '0.1.x',
     description = 'A library for baidu translation',
     license = 'GNU GENERAL PUBLIC LICENSE',
     url = 'https://github.com/zsimline/bdtrans',

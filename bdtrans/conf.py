@@ -4,5 +4,5 @@ PROFILE_PATH = {
     'linux': '/home/%s/.bdtrans',
     'macosx': '/Users/%s/.bdtrans',
     'windows': 'C:/Users/%s/AppData/Local/.bdtrans',
-    'unknowos': './.bdtrans'
+    'unknowOS': './.bdtrans'
 }

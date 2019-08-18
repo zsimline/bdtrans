@@ -1,9 +1,9 @@
 import sys
 import json
 import random
+import urllib
 import hashlib
 import requests
-from urllib.parse import quote
 
 from bdtrans import conf
 from bdtrans import common
@@ -83,7 +83,6 @@ class Translate(object):
         
         source_lang_ = self.source_lang
         target_lang_ = self.target_lang
-        
         if source_lang:
             source_lang_ = source_lang
         if target_lang:
@@ -93,7 +92,7 @@ class Translate(object):
             source_lang_ = target_lang_
             target_lang_ = temp
 
-        param = (self.appid, quote(self.query),
+        param = (self.appid, urllib.parse.quote(self.query),
                  source_lang_,target_lang_,salt,sign)
         return self.api % param
 

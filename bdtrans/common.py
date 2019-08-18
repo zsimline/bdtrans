@@ -4,9 +4,8 @@ import gettext
 import getpass
 import platform
 
-
+from bdtrans import conf
 from bdtrans import language
-from bdtrans.conf import PROFILE_PATH
 
 
 def i18n():
@@ -22,28 +21,20 @@ def check_upgrade():
 
 
 def check_platform():
-    return dict(
-        linux = platform.system() == 'Linux',
-        macosx = platform.system() == 'Darwin',
-        windows = platform.system() == 'Windows'
-    )
-
-
-def get_current_user():
-    username = getpass.getuser()
-    return username
+    platform_ = platform.system() 
+    if platform_ == 'Linux':
+        return 'linux'
+    if platform_ == 'Darwin':
+        return 'macosx'
+    if platform_ == 'Windows':
+        return 'windows'
+    return 'unkownOS'
 
 
 def get_profile_path():
     platform = check_platform()
-    username = get_current_user()
-    if platform['linux']:
-        return PROFILE_PATH['linux'] % username
-    if platform['macosx']:
-        return PROFILE_PATH['macosx'] % username
-    if platform['windows']:
-        return PROFILE_PATH['windows'] % username
-    return PROFILE_PATH['unknowos'] % username
+    username = getpass.getuser()
+    return conf.PROFILE_PATH[platform] % username
 
 
 def list_langs():
