@@ -11,8 +11,8 @@ _profile = common.get_profile_path()
 
 def display_rules():
     rules = _translator.get_rules()
-    print('source language: %s' % rules[0])
-    print('target language: %s' % rules[1])
+    print('current source language: %s' % rules[0])
+    print('current target language: %s' % rules[1])
 
 
 def set_lang(source_lang, target_lang):
@@ -24,7 +24,6 @@ def set_lang(source_lang, target_lang):
 
 def reverse_lang():
     _translator.reverse_lang()
-    print('Reverse language code successfully！')
     display_rules()
 
 
