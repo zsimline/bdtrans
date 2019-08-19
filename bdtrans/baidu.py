@@ -42,15 +42,17 @@ def _record_words(source, result):
     _trans_hisory[source] = result
 
 
-def save(filename='output'):
+def save(file_name):
     try:
-        with open('%s.%s' % (filename,'txt'), 'w') as f:
+        with open('%s.%s' % (file_name,'txt'), 'w') as f:
             f.write('\n'.join(_trans_hisory))
-        with open('%s.%s' % (filename,'json'), 'w') as f:
+        with open('%s.%s' % (file_name,'json'), 'w') as f:
             json.dump(_trans_hisory, f, ensure_ascii=False)
-        return True
+        print('Save translation results successfully！')
+        print('TEXT file is stored in %s' % '%s.%s' % (file_name,'txt'))
+        print('JSON file is stored in %s' % '%s.%s' % (file_name,'json'))
     except Exception :
-        return False
+        print('Save translation results failed！')
 
 
 if os.path.isfile(_profile):
@@ -58,4 +60,3 @@ if os.path.isfile(_profile):
 else:
     deploy.initialize_app()
     _translator = model.Translate()
-

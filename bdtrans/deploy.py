@@ -20,35 +20,33 @@ def setup(appid, secretkey, source_lang, target_lang):
         print('\nYour profile is located at %s.' % _profile)
 
 
-def change_info():
+def change_info(appid ,secretkey):
     config = None
-    info = _read_info()
     with open(_profile, 'r') as f:
         config = json.load(f)
-    config['APPID'] = info['appid']
-    config['SECRETKEY'] = info['secretkey']
+    config['APPID'] = appid
+    config['SECRETKEY'] = secretkey
     with open(_profile, 'w') as f:
         json.dump(config, f)
-    print('Chagnge app info successful!')
-    print('Your appid is => %s' % info['appid'])
-    print('Your secretkey is => %s' % info['secretkey'])
+    print('Change app info successful!')
+    print('Your appid is => %s' % appid)
+    print('Your secretkey is => %s' % secretkey)
 
 
-def change_lang():
+def change_lang(source_lang, target_lang):
     config = None
-    lang = _read_lang()
     with open(_profile, 'r') as f:
         config = json.load(f)
-    config['SOURCE_LANG'] = lang['source_lang']
-    config['TARGET_LANG'] = lang['target_lang']
+    config['SOURCE_LANG'] = source_lang
+    config['TARGET_LANG'] = target_lang
     with open(_profile, 'w') as f:
         json.dump(config, f)
-    print('Chagnge source and target languages successful!')
-    print('The default source language is => %s' % lang['source_lang'])
-    print('The default target language is => %s' % lang['target_lang'])
+    print('Change source and target languages successful!')
+    print('The default source language is => %s' % source_lang)
+    print('The default target language is => %s' % target_lang)
 
 
-def _read_info():
+def read_info():
     appid = ''
     while(True):
         appid = input('please enter your appid: ')
@@ -62,7 +60,7 @@ def _read_info():
     return {'appid': appid, 'secretkey':secretkey}
 
 
-def _read_lang():
+def read_lang():
     while(True):
         source_lang = input('please enter the source language code: ')
         if source_lang is '':
@@ -85,7 +83,7 @@ def initialize_app():
            'If you don\'t have an appid, plaese see:\n'
            'https://github.com/zsimline/bdtrans/blob/master/README.md\n'))
     
-    info = _read_info()
+    info = read_info()
     
     print(('\nAnd, it is recommended that you specify common '
            'source and target languages.   \n\nThe following '
@@ -94,7 +92,7 @@ def initialize_app():
     print(('If you press Enter directly, the default source or '
            'target language will be specified.\n'))
     
-    lang = _read_lang()
+    lang = read_lang()
 
     setup(info['appid'], info['secretkey'], 
           lang['source_lang'], lang['target_lang'])
