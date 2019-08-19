@@ -62,18 +62,16 @@ class Translate(object):
         except KeyboardInterrupt:
             pass
 
-    def _display(self, response, show_raw):
+    def _parse_response(self, response):
         content = response.content.decode('UTF-8')
         original = json.loads(content)
-        if show_raw:
-            self._console(original)
-            return None
         try:
             result = original['trans_result'][0]['dst']
-            self._console(result)
+            return result
         except KeyError:
             self._console('2202 The return value is incorrect')
             self._console(original)
+            return None
 
     def _package_words(self, words, source_lang, 
                        target_lang, reverse):
@@ -96,12 +94,12 @@ class Translate(object):
                  source_lang_,target_lang_,salt,sign)
         return self.api % param
 
-    def translate(self, words, source_lang, target_lang, reverse, show_raw):
+    def translate(self, words, source_lang, target_lang, reverse):
         response = None
         url = self._package_words(words, source_lang, target_lang, reverse)
         response = self._api_request(url)
         if response is not None:
-            self._display(response, show_raw)
+            return self._parse_response(response)
 
     def _console(self, message, wrap='\n'):
         print(message, end=wrap)

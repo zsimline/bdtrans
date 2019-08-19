@@ -12,3 +12,7 @@ class CommandError(Exception):
         print(('Error, please set the language code ' 
                'in this way:\n  setlang source_lang '
                'target_lang \nsuch as setlang en zh '))
+
+
+class OutputError(Exception):
+    
