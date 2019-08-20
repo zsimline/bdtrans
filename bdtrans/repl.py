@@ -1,10 +1,7 @@
 import sys
-sys.path.append('/home/mxsyx/desktop/bdtrans/')
-sys.path.remove('/home/mxsyx/desktop/bdtrans/bdtrans')
-from prompt_toolkit import prompt
-from prompt_toolkit.history import FileHistory 
-from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
-from prompt_toolkit.contrib.completers import WordCompleter
+
+import prompt_toolkit
+from prompt_toolkit.contrib import completers
 
 from bdtrans import baidu
 from bdtrans import error
@@ -12,11 +9,10 @@ from bdtrans import deploy
 from bdtrans import common
 
 
-commands = ['/reve','/rule','/list','/help','/quit',
-            '/save','/setlang','/changeinfo','/changelang']
-_file_history = FileHistory('history.txt')
-_auto_suggest_from_history = AutoSuggestFromHistory()
-_word_completer = WordCompleter(commands, ignore_case=True)
+commands = ['/reve','/rule','/list','/help','/quit','/save','/setlang',]
+_file_history =  prompt_toolkit.history.FileHistory('history.txt')
+_word_completer = completers.WordCompleter(commands, ignore_case=True)
+_auto_suggest_from_history = prompt_toolkit.auto_suggest.AutoSuggestFromHistory()
 
 
 def _print_help():
@@ -29,13 +25,11 @@ def _print_help():
     print('  /save filename \n\tsave translation results')
     print('  /setlang source_lang target_lang')
     print('  \tset the source and target languages')
-    print('  /changeinfo  \n\tchange app information in the configuration file')
-    print('  /changelang  \n\tchange translation rules in the configuration file')
     print(('\nTry to use =code to temporarily specify the target language,'
            '\nthen the source language is automatically specified as auto,'
            '\nfor example "=zh hello world"\n'))
     print(('Want more help information? Please see:\n'
-          'https://github.com/zsimline/immortal/blob/master/README.md\n'))
+           'https://github.com/zsimline/immortal/blob/master/README.md\n'))
 
 
 def _exit_cmdline():
@@ -68,16 +62,6 @@ def _save_result(user_input):
         baidu.save(cmds[1])
 
 
-def _change_info():
-    info = deploy.read_info()
-    deploy.change_info(info['appid'], info['secretkey'])
-
-
-def _change_lang():
-    lang = deploy.read_lang()
-    deploy.change_lang(lang['source_lang'], lang['target_lang'])
-
-
 def _execute_command(user_input):
     command = user_input.split(' ')[0]
     if   command == '/reve':
@@ -94,10 +78,6 @@ def _execute_command(user_input):
         _save_result(user_input)
     elif command == '/setlang':
         _set_lang(user_input)
-    elif command == '/changeinfo':
-        _change_info()
-    elif command == '/changelang':
-        _change_lang()
     elif command == '/':
         pass
     else:
@@ -127,14 +107,11 @@ def _select_operate(user_input):
 def translate_loop():
     try:
         while True:
-            user_input = prompt('> ',history=_file_history,
-                   auto_suggest=_auto_suggest_from_history,    
-                   completer=_word_completer)
+            user_input = prompt_toolkit.prompt(
+                '> ',history=_file_history,
+                auto_suggest=_auto_suggest_from_history,    
+                completer=_word_completer)
             if user_input:
                 _select_operate(user_input)
     except KeyboardInterrupt:
         _exit_cmdline()
-
-
-if __name__ == '__main__':
-    translate_loop()

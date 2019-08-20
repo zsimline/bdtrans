@@ -1,4 +1,5 @@
 import os
+import time
 import json
 
 from bdtrans import model
@@ -36,6 +37,28 @@ def trans(words, source_lang=None, target_lang=None, reverse=False):
     if result:
         _record_words(words, result)
         return result
+    else:
+        return ''
+
+def io_trans(input_file, output_file, quiet=False):
+    lines = None
+    results = []
+    with open(input_file, 'r') as f:
+        lines = f.readlines()
+    print('%s lines in total' % len(lines))
+    for i in range(1, len(lines)):
+        print('current line: %s\r' % i, end='')
+        if lines[i] == '\n':
+            continue
+        result = trans(lines[i])
+        results.append(result)
+        if not quiet:
+            print(result)
+        time.sleep(1)
+    if output_file:
+        with open(output_file, 'w') as f:
+            f.write('\n'.join(results))
+    print('\nAll lines have been translated.')
 
 
 def _record_words(source, result):
