@@ -3,13 +3,14 @@ sys.path.append('/home/mxsyx/desktop/bdtrans/')
 sys.path.remove('/home/mxsyx/desktop/bdtrans/bdtrans')
 import argparse
 
-
 from bdtrans import repl
 from bdtrans import baidu
 from bdtrans import common
+from bdtrans import deploy
 
+
+__version__ = '0.2.0'
 _ = common.i18n()
-__version = '0.2.0'
 
 
 def _print_help(parser):
@@ -25,11 +26,13 @@ def _print_version():
 def _change_info():
     info = deploy.read_info()
     deploy.change_info(info['appid'], info['secretkey'])
+    sys.exit(0)
 
 
 def _change_lang():
     lang = deploy.read_lang()
     deploy.change_lang(lang['source_lang'], lang['target_lang'])
+    sys.exit(0)
 
 
 def _set_lang(source_lang, target_lang):
@@ -43,12 +46,14 @@ def _set_lang(source_lang, target_lang):
     else:
         return
 
+
 def _io_trans(input_file, output_file, quiet):
     if  input_file and not output_file:
         baidu.io_trans(input_file, None, quiet) 
     else:
         baidu.io_trans(input_file, output_file, quiet) 
     sys.exit(0)
+
 
 def _get_parser():
     parser = argparse.ArgumentParser(prog='China Baidu Translator',
@@ -61,6 +66,8 @@ def _get_parser():
                         help=_('check for upgrade of this program'))
     parser.add_argument('-l', '--list', action='store_true',
                         help=_('show reference table of languages and exit'))
+    parser.add_argument('-q', '--quiet',action='store_true',
+                        help=_('do not print translation results to the console'))
     parser.add_argument('-S', '--shell', action='store_true',
                         help=_('start an interactive shell'))
     parser.add_argument('-s', '--source', metavar='CODE',
@@ -71,8 +78,12 @@ def _get_parser():
                         help=_('specify the input file'))
     parser.add_argument('-o', '--output', metavar='FILENAME', 
                         help=_('specify the output file'))
-    parser.add_argument('-q', '--quiet',action='store_true',
-                help=_('do not print translation results to the console'))
+    parser.add_argument('--init', action='store_true',
+                        help=_('follow the wizard to initialize app'))
+    parser.add_argument('--changeinfo', action='store_true',
+                        help=_('change app information in configuration file'))
+    parser.add_argument('--changelang', action='store_true',
+                        help=_('change translation rules in configuration file'))
     return parser
 
 
@@ -100,9 +111,14 @@ if __name__ == '__main__':
         common.check_upgrade()
     if args.list:
         common.list_langs()
+    if args.init:
+        deploy.initialize_app()
+    if args.changeinfo:
+        _change_info()
+    if args.changelang:
+        _change_lang()
     if args.shell:
         repl.translate_loop()
-        sys.exit(0)
 
     _set_lang(args.source, args.target)
     if args.input:

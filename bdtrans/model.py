@@ -1,15 +1,16 @@
 import sys
 import json
 import random
-import urllib
 import hashlib
-import requests
+from urllib import request
 
 from bdtrans import conf
+from bdtrans import error
 from bdtrans import common
 from bdtrans import language
 
 
+_ = common.i18n()
 _profile = common.get_profile_path()
 
 
@@ -55,19 +56,18 @@ class Translate(object):
 
     def _api_request(self, url):
         try:
-            response = requests.request('GET', url)
-            return response
-        except ConnectionError:
+            return request.urlopen(url)
+        except error.ConnectError:
             self._console('2201 Network not connected')
         except KeyboardInterrupt:
             pass
 
     def _parse_response(self, response):
-        content = response.content.decode('UTF-8')
-        original = json.loads(content)
+        content = response.read()
+        content_text = content.decode('UTF-8')
+        original = json.loads(content_text)
         try:
-            result = original['trans_result'][0]['dst']
-            return result
+            return original['trans_result'][0]['dst']
         except KeyError:
             self._console('2202 The return value is incorrect')
             self._console(original)
@@ -90,7 +90,7 @@ class Translate(object):
             source_lang_ = target_lang_
             target_lang_ = temp
 
-        param = (self.appid, urllib.parse.quote(self.query),
+        param = (self.appid,request.quote(self.query),
                  source_lang_,target_lang_,salt,sign)
         return self.api % param
 

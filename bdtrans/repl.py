@@ -9,7 +9,7 @@ from bdtrans import deploy
 from bdtrans import common
 
 
-commands = ['/reve','/rule','/list','/help','/quit','/save','/setlang',]
+commands = ['/reve','/rule','/list','/help','/quit','/save','/setlang']
 _file_history =  prompt_toolkit.history.FileHistory('history.txt')
 _word_completer = completers.WordCompleter(commands, ignore_case=True)
 _auto_suggest_from_history = prompt_toolkit.auto_suggest.AutoSuggestFromHistory()

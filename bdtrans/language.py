@@ -38,6 +38,7 @@ class TargetCode(Code):
 
 
 DEFAULT_SOURCE_LANG = 'en'
+
 DEFAULT_TARGET_LANG = 'zh'
 
 LANGUAGES = {

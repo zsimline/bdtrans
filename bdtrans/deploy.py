@@ -4,6 +4,7 @@ from bdtrans import common
 from bdtrans import language
 
 
+_ = common.i18n()
 _profile = common.get_profile_path()
 
 

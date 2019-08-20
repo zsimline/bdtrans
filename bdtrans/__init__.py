@@ -12,7 +12,7 @@ from bdtrans.deploy import change_info
 from bdtrans.deploy import change_lang
 
 
-__version__ = 'v1.0'
+__version__ = '0.2.0'
 __all__= ['trans','set_lang','reverse_lang','display_rules',
           'list_lags()','get_profile_path','initialize_app',
           'change_info','change_lang','save']

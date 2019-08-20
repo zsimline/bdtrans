@@ -9,6 +9,7 @@ from bdtrans import common
 
 _translator = None
 _trans_hisory = {}
+_ = common.i18n()
 _profile = common.get_profile_path()
 
 
@@ -25,9 +26,26 @@ def set_lang(source_lang, target_lang):
         _translator.set_target(target_lang)
 
 
+def _record_words(source, result):
+    _trans_hisory[source] = result
+
+
 def reverse_lang():
     _translator.reverse_lang()
     display_rules()
+
+
+def save(file_name):
+    try:
+        with open('%s.%s' % (file_name,'txt'), 'w') as f:
+            f.write('\n'.join(_trans_hisory))
+        with open('%s.%s' % (file_name,'json'), 'w') as f:
+            json.dump(_trans_hisory, f, ensure_ascii=False)
+        print('Save translation results successfully！')
+        print('TEXT file is stored in %s' % '%s.%s' % (file_name,'txt'))
+        print('JSON file is stored in %s' % '%s.%s' % (file_name,'json'))
+    except Exception :
+        print('Save translation results failed！')
 
 
 def trans(words, source_lang=None, target_lang=None, reverse=False):
@@ -39,6 +57,7 @@ def trans(words, source_lang=None, target_lang=None, reverse=False):
         return result
     else:
         return ''
+
 
 def io_trans(input_file, output_file, quiet=False):
     lines = None
@@ -61,25 +80,7 @@ def io_trans(input_file, output_file, quiet=False):
     print('\nAll lines have been translated.')
 
 
-def _record_words(source, result):
-    _trans_hisory[source] = result
-
-
-def save(file_name):
-    try:
-        with open('%s.%s' % (file_name,'txt'), 'w') as f:
-            f.write('\n'.join(_trans_hisory))
-        with open('%s.%s' % (file_name,'json'), 'w') as f:
-            json.dump(_trans_hisory, f, ensure_ascii=False)
-        print('Save translation results successfully！')
-        print('TEXT file is stored in %s' % '%s.%s' % (file_name,'txt'))
-        print('JSON file is stored in %s' % '%s.%s' % (file_name,'json'))
-    except Exception :
-        print('Save translation results failed！')
-
-
-if os.path.isfile(_profile):
-    _translator = model.Translate()
-else:
+if not os.path.isfile(_profile):
     deploy.initialize_app()
-    _translator = model.Translate()
+
+_translator = model.Translate()
