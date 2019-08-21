@@ -19,3 +19,12 @@ class CommandError(Exception):
 
 
 ConnectError = urllib.error.URLError
+
+
+class TranslationError(Exception):
+    def __init__(self):
+        pass
+    
+    def display_msg(self, error_code):
+        pass
+    

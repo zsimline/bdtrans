@@ -4,9 +4,15 @@ import gettext
 import getpass
 import platform
 
-
-from bdtrans import conf
 from bdtrans import language
+
+
+_PROFILE_PATH = {
+    'linux': '/home/%s/.bdtrans',
+    'macosx': '/Users/%s/.bdtrans',
+    'windows': 'C:/Users/%s/AppData/Local/.bdtrans',
+    'unknowOS': './.bdtrans'
+}
 
 
 def i18n():
@@ -35,7 +41,7 @@ def check_platform():
 def get_profile_path():
     platform = check_platform()
     username = getpass.getuser()
-    return conf.PROFILE_PATH[platform] % username
+    return _PROFILE_PATH[platform] % username
 
 
 def list_langs():

@@ -1,10 +1,12 @@
+"""The translate class is defined here.
+"""
+
 import sys
 import json
 import random
 import hashlib
 from urllib import request
 
-from bdtrans import conf
 from bdtrans import error
 from bdtrans import common
 from bdtrans import language
@@ -12,10 +14,13 @@ from bdtrans import language
 
 _ = common.i18n()
 _profile = common.get_profile_path()
+# API of Baidu Translation
+_API = ('https://api.fanyi.baidu.com/api/trans/vip/translate?'
+       'appid=%s&q=%s&from=%s&to=%s&salt=%s&sign=%s')
 
 
 class Translate(object):
-    api = conf.API
+    api = _API
 
     def __init__(self):
         config = None
@@ -33,10 +38,15 @@ class Translate(object):
         self.target_lang = code
 
     def get_rules(self):
-        return (self.source_lang, 
-                self.target_lang)
+        """
+        Returns a tuple containing the current translation rules.
+        """
+        return (self.source_lang, self.target_lang)
 
     def reverse_lang(self):
+        """
+        Inversion of Source Language and Target Language.
+        """
         temp = self.source_lang
         self.source_lang = self.target_lang
         self.target_lang = temp
@@ -45,40 +55,61 @@ class Translate(object):
         self.query = words
  
     def _make_salt(self):
+        """
+        Generate a random number between 32768 and 65536
+        """
         return str(random.randint(32768, 65536))
 
     def _make_sign(self, salt):
+        """
+        Generate a signature by salt.
+        """
         sign = '%s%s%s%s' % (
-               self.appid,self.query,salt,self.secretkey)
+            self.appid,self.query,salt,self.secretkey)
         md5obj = hashlib.md5() 
         md5obj.update(sign.encode('UTF-8'))
         return md5obj.hexdigest()
 
     def _api_request(self, url):
+        """
+        Send the request to the server and return 
+        the response of the server.
+        """
         try:
             return request.urlopen(url)
         except error.ConnectError:
+            # Capture exception if network connection fails
             self._console('2201 Network not connected')
         except KeyboardInterrupt:
             pass
 
     def _parse_response(self, response):
+        """
+        Extraction of translation results.
+        The server will return a JSON string.
+        """
         content = response.read()
         content_text = content.decode('UTF-8')
         original = json.loads(content_text)
         try:
             return original['trans_result'][0]['dst']
         except KeyError:
-            self._console('2202 The return value is incorrect')
-            self._console(original)
-            return None
+        # Capture exception if parsing translation results fails
+            try:
+                raise error.TranslationError()
+            except error.TranslationError as e:
+                e.display_msg(original['error_code'])           
 
-    def _package_words(self, words, source_lang, 
-                       target_lang, reverse):
+    def _package_words(self, words, source_lang, target_lang, reverse):
+        """
+        Encapsulating URL based on parameter values.
+        """
         self._set_query(words)
         salt = self._make_salt()
         sign = self._make_sign(salt)
         
+        # The values of source_lang and target_lang
+        # will override the default translation rules
         source_lang_ = self.source_lang
         target_lang_ = self.target_lang
         if source_lang:
