@@ -1,5 +1,7 @@
 import urllib
 
+from bdtrans._global import _
+
 
 class CommandError(Exception):
     def __init__(self, error_code):
@@ -9,12 +11,12 @@ class CommandError(Exception):
             self._save_error()
 
     def _set_lang_error(self):
-        print(('[error] please use the command in this way:'
+        print(_('[error] please use the command in this way:'
                 '\n\t/setlang source_lang target_lang'
                 '\n\tsuch as setlang en zh'))
     
     def _save_error(self):
-        print(('[error] please use the command in this way:'
+        print(_('[error] please use the command in this way:'
                 '\n\t/save filename\n\tsuch as save my_result'))
 
 
@@ -27,4 +29,3 @@ class TranslationError(Exception):
     
     def display_msg(self, error_code):
         pass
-    

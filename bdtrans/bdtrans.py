@@ -7,10 +7,10 @@ from bdtrans import repl
 from bdtrans import baidu
 from bdtrans import common
 from bdtrans import deploy
+from bdtrans._global import _
 
 
 __version__ = '0.2.0'
-_ = common.i18n()
 
 
 def _print_help(parser):
@@ -18,6 +18,11 @@ def _print_help(parser):
     Print help information and exit.
     """
     parser.print_help()
+    sys.exit(0)
+
+
+def _print_langs():
+    common.list_langs()
     sys.exit(0)
 
 
@@ -55,7 +60,7 @@ def _set_lang(source_lang, target_lang):
     elif not source_lang and target_lang:
         baidu.set_lang('auto', target_lang)
     elif source_lang and not target_lang:
-        print("Can't just specify the source language !")
+        print(_("Can't just specify the source language !"))
         sys.exit(0)
     else:
         return
@@ -65,20 +70,17 @@ def _get_parser():
     """
     Create and return a command line parameter parser.
     """
-    parser = argparse.ArgumentParser(prog='China Baidu Translator',
-                                     add_help=False)
+    parser = argparse.ArgumentParser(prog='bdtrans', add_help=False)
     parser.add_argument('-h', '--help', action='store_true',
-                        help=_("show this help message and exit"))
+                        help=_("show this message and exit"))
     parser.add_argument('-v', '--version', action='store_true',
                         help=_("show program's version number and exit"))
-    parser.add_argument('-u', '--upgrade', action='store_true',
-                        help=_('check for upgrade of this program'))
     parser.add_argument('-l', '--list', action='store_true',
                         help=_('show reference table of languages and exit'))
-    parser.add_argument('-q', '--quiet',action='store_true',
-                        help=_('do not print translation results to the console'))
     parser.add_argument('-S', '--shell', action='store_true',
                         help=_('start an interactive shell'))
+    parser.add_argument('-q', '--quiet',action='store_true',
+                        help=_('do not print translation results to the console'))
     parser.add_argument('-s', '--source', metavar='CODE',
                         help=_('specify the source language'))
     parser.add_argument('-t', '--target', metavar='CODE', 
@@ -124,10 +126,8 @@ if __name__ == '__main__':
         _print_help(parser)
     if args.version:
         _print_version()
-    if args.upgrade:
-        common.check_upgrade()
     if args.list:
-        common.list_langs()
+        _print_langs()
     if args.init:
         deploy.initialize_app()
     if args.changeinfo:

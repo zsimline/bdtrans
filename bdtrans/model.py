@@ -9,22 +9,15 @@ import hashlib
 from urllib import request
 
 from bdtrans import error
-from bdtrans import common
-from bdtrans import language
-
-
-_ = common.i18n()
-_profile = common.get_profile_path()
-# API of Baidu Translation
-_API = ('https://api.fanyi.baidu.com/api/trans/vip/translate?'
-       'appid=%s&q=%s&from=%s&to=%s&salt=%s&sign=%s')
+from bdtrans import _global
 
 
 class Translate(object):
-    api = _API
+    api = _global.API
 
     def __init__(self):
         config = None
+        _profile = _global.PROFILE
         with open(_profile, 'r') as f:
             config = json.load(f)
         self.appid = config['APPID']
@@ -81,7 +74,7 @@ class Translate(object):
             return request.urlopen(url)
         except error.ConnectError:
             # Capture exception if network connection fails
-            self._console('2201 Network not connected')
+            print(_global._('2201 Network not connected'))
         except KeyboardInterrupt:
             pass
 
@@ -137,6 +130,3 @@ class Translate(object):
         response = self._api_request(url)
         if response is not None:
             return self._parse_response(response)
-
-    def _console(self, message, wrap='\n'):
-        print(message, end=wrap)

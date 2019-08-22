@@ -7,6 +7,7 @@ from bdtrans import baidu
 from bdtrans import error
 from bdtrans import deploy
 from bdtrans import common
+from bdtrans._global import _
 
 
 commands = ['/reve','/rule','/list','/help','/quit','/save','/setlang']
@@ -16,24 +17,24 @@ _auto_suggest_from_history = prompt_toolkit.auto_suggest.AutoSuggestFromHistory(
 
 
 def _print_help():
-    print('\nThe following commands are supported：\n')
-    print('  /reve  \n\treverse source language and target language')
-    print('  /rule  \n\tshow current translation rules')
-    print('  /list  \n\tprint supported language code')
-    print('  /help  \n\tprint help information')
-    print('  /quit  \n\tquit the program')
-    print('  /save filename \n\tsave translation results')
-    print('  /setlang source_lang target_lang')
-    print('  \tset the source and target languages')
-    print(('\nTry to use =code to temporarily specify the target language,'
+    print(_('\nThe following commands are supported：\n'))
+    print(_('  /reve  \n\treverse source language and target language'))
+    print(_('  /rule  \n\tshow current translation rules'))
+    print(_('  /list  \n\tshow reference table of languages and exit'))
+    print(_('  /help  \n\tprint help information'))
+    print(_('  /quit  \n\tquit the program'))
+    print(_('  /save filename \n\tsave translation results'))
+    print(_('  /setlang source_lang target_lang'))
+    print(_('  \tset the source and target languages'))
+    print(_('\nTry to use =code to temporarily specify the target language,'
            '\nthen the source language is automatically specified as auto,'
            '\nfor example "=zh hello world"\n'))
-    print(('Want more help information? Please see:\n'
+    print(_('Want more help information? Please see:\n'
            'https://github.com/zsimline/immortal/blob/master/README.md\n'))
 
 
 def _exit_cmdline():
-    print('Good Bye!')
+    print(_('Good Bye!'))
     sys.exit(0)
 
 
@@ -118,4 +119,4 @@ def translate_loop():
             if user_input:
                 _select_operate(user_input)
         except KeyboardInterrupt:
-            print('To exit, type /quit')
+            print(_('To exit, type /quit'))
