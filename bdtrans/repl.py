@@ -63,6 +63,9 @@ def _save_result(user_input):
 
 
 def _execute_command(user_input):
+    """
+    Execute commands entered by users
+    """
     command = user_input.split(' ')[0]
     if   command == '/reve':
         baidu.reverse_lang()
@@ -87,6 +90,7 @@ def _execute_command(user_input):
 def _trans(first, user_input):
     result = None
     if first[0] == '=':
+        # set the target language when the first character is =
         target_lang = user_input.split(' ')[0][1:]
         if common.check_target_code(target_lang):
             words = ' '.join(user_input.split(' ')[1:])
@@ -105,13 +109,13 @@ def _select_operate(user_input):
 
 
 def translate_loop():
-    try:
-        while True:
+    while True:
+        try:
             user_input = prompt_toolkit.prompt(
                 '> ',history=_file_history,
                 auto_suggest=_auto_suggest_from_history,    
                 completer=_word_completer)
             if user_input:
                 _select_operate(user_input)
-    except KeyboardInterrupt:
-        _exit_cmdline()
+        except KeyboardInterrupt:
+            print('To exit, type /quit')

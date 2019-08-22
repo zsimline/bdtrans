@@ -1,4 +1,5 @@
-"""The translate class is defined here.
+"""
+The translate model is defined here.
 """
 
 import sys
@@ -56,13 +57,14 @@ class Translate(object):
  
     def _make_salt(self):
         """
-        Generate a random number between 32768 and 65536
+        Generate and return a random number 
+        between 32768 and 65536.
         """
         return str(random.randint(32768, 65536))
 
     def _make_sign(self, salt):
         """
-        Generate a signature by salt.
+        Generate and return a signature by salt.
         """
         sign = '%s%s%s%s' % (
             self.appid,self.query,salt,self.secretkey)
@@ -87,6 +89,10 @@ class Translate(object):
         """
         Extraction of translation results.
         The server will return a JSON string.
+
+        When the translation fails, the server will return
+        a JSON string containing error_code, through which
+        we can know what error has occurred.
         """
         content = response.read()
         content_text = content.decode('UTF-8')
@@ -108,8 +114,8 @@ class Translate(object):
         salt = self._make_salt()
         sign = self._make_sign(salt)
         
-        # The values of source_lang and target_lang
-        # will override the default translation rules
+        # the values of source_lang and target_lang
+        # will override the default translation rules.
         source_lang_ = self.source_lang
         target_lang_ = self.target_lang
         if source_lang:

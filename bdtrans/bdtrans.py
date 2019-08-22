@@ -14,11 +14,17 @@ _ = common.i18n()
 
 
 def _print_help(parser):
+    """
+    Print help information and exit.
+    """
     parser.print_help()
     sys.exit(0)
 
 
 def _print_version():
+    """
+    Print version information and exit.
+    """
     print(__version__)
     sys.exit(0)
 
@@ -36,6 +42,14 @@ def _change_lang():
 
 
 def _set_lang(source_lang, target_lang):
+    """
+    Setting source language code and target language code.
+    
+    If only the target language is specified,
+    the source language will be specified as auto.
+    If only the source language is specified, 
+    an error message is prompted.
+    """
     if  source_lang and target_lang:
         baidu.set_lang(source_lang, target_lang)
     elif not source_lang and target_lang:
@@ -47,15 +61,10 @@ def _set_lang(source_lang, target_lang):
         return
 
 
-def _io_trans(input_file, output_file, quiet):
-    if  input_file and not output_file:
-        baidu.io_trans(input_file, None, quiet) 
-    else:
-        baidu.io_trans(input_file, output_file, quiet) 
-    sys.exit(0)
-
-
 def _get_parser():
+    """
+    Create and return a command line parameter parser.
+    """
     parser = argparse.ArgumentParser(prog='China Baidu Translator',
                                      add_help=False)
     parser.add_argument('-h', '--help', action='store_true',
@@ -85,6 +94,14 @@ def _get_parser():
     parser.add_argument('--changelang', action='store_true',
                         help=_('change translation rules in configuration file'))
     return parser
+
+
+def _io_trans(input_file, output_file, quiet):
+    if  input_file and not output_file:
+        baidu.io_trans(input_file, None, quiet) 
+    else:
+        baidu.io_trans(input_file, output_file, quiet) 
+    sys.exit(0)
 
 
 def _trans(words, output_file, quiet=False):
@@ -121,7 +138,11 @@ if __name__ == '__main__':
         repl.translate_loop()
 
     _set_lang(args.source, args.target)
+    # when the user specifies the input file, 
+    # translate the sentences in the file.
     if args.input:
         _io_trans(args.input, args.output, args.quiet)
+    # otherwise, translate the sentences entered
+    # by the user on the command line.
     else:
         _trans(words, args.output, args.quiet)

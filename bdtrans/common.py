@@ -24,10 +24,16 @@ def i18n():
 
 
 def check_upgrade():
+    """
+    Detection program update.
+    """
     sys.exit(0)  # TODO
 
 
 def check_platform():
+    """
+    Return the Operating System used by the user.
+    """
     platform_ = platform.system() 
     if platform_ == 'Linux':
         return 'linux'
@@ -39,12 +45,18 @@ def check_platform():
 
 
 def get_profile_path():
+    """
+    Get the program configuration file path
+    """
     platform = check_platform()
     username = getpass.getuser()
     return _PROFILE_PATH[platform] % username
 
 
 def list_langs():
+    """
+    Print Language List.
+    """
     langs = language.LANGUAGES
     print('------------------------------')
     for lang in langs:
@@ -55,6 +67,9 @@ def list_langs():
 
 
 def check_source_code(code):
+    """
+    Checking the source language code.
+    """
     if hasattr(language.SourceCode, code):
         return True
     else:
@@ -63,6 +78,9 @@ def check_source_code(code):
 
 
 def check_target_code(code):
+    """
+    Checking the target language code.
+    """
     if hasattr(language.TargetCode, code):
         return True
     elif code=='auto':
