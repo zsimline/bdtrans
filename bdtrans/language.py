@@ -1,17 +1,9 @@
-""" The languages code are defined here.
 """
-
+The languages code are defined here.
+"""
 import os
-import gettext
 
-def i18n():
-    app_name = 'translate'
-    local_dir = os.path.abspath("locale")
-    gettext.bindtextdomain(app_name, local_dir)
-    gettext.textdomain(app_name)
-    return gettext.gettext
-
-_ = i18n()
+from bdtrans._global import _
 
 
 class Code(object):
@@ -60,6 +52,7 @@ class TargetCode(Code):
     pass
 
 
+# Language List
 LANGUAGES = {
     'zh':  _('Chinese'),
     'en':  _('English'),

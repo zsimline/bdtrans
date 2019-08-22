@@ -16,7 +16,7 @@ def setup(appid, secretkey, source_lang, target_lang):
     with open(PROFILE, 'w') as f:
         json.dump(config, f)
         print(_('\nSetup successful!'))
-        print(_('\nYour profile is located at %s.') % PROFILE)
+        print(_('\nYour profile is located at %s') % PROFILE)
 
 
 def change_info(appid ,secretkey):

@@ -66,6 +66,11 @@ def _set_lang(source_lang, target_lang):
         return
 
 
+def _initialize_app():
+    deploy.initialize_app()
+    sys.exit(0)
+
+
 def _get_parser():
     """
     Create and return a command line parameter parser.
@@ -92,7 +97,7 @@ def _get_parser():
     parser.add_argument('--init', action='store_true',
                         help=_('follow the wizard to initialize app'))
     parser.add_argument('--changeinfo', action='store_true',
-                        help=_('change app information in configuration file'))
+                        help=_('change AppID in configuration file'))
     parser.add_argument('--changelang', action='store_true',
                         help=_('change translation rules in configuration file'))
     return parser
@@ -129,7 +134,7 @@ if __name__ == '__main__':
     if args.list:
         _print_langs()
     if args.init:
-        deploy.initialize_app()
+        _initialize_app()
     if args.changeinfo:
         _change_info()
     if args.changelang:

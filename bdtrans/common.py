@@ -1,6 +1,7 @@
 from bdtrans import language
 from bdtrans._global import _
 
+
 def list_langs():
     """
     Print Language List.
@@ -21,7 +22,7 @@ def check_source_code(code):
     if hasattr(language.SourceCode, code):
         return True
     else:
-        print(_('\nInvalid source code!'))
+        print(_('\nInvalid source code!\n'))
         return False
 
 
@@ -34,5 +35,5 @@ def check_target_code(code):
     elif code=='auto':
         print(_('\nTarget code can not be auto!!!\n'))
     else:
-        print(_('\nInvalid target code!'))
+        print(_('\nInvalid target code!\n'))
         return False

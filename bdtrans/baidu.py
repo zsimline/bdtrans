@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import json
 
@@ -7,6 +8,7 @@ from bdtrans import deploy
 from bdtrans import common
 from bdtrans import _global
 from bdtrans._global import _
+
 
 _translator = None
 _trans_hisory = {}
@@ -89,7 +91,7 @@ def trans(words, source_lang=None, target_lang=None, reverse=False):
         reverse  whether to reverse the rules of translation.
     """
     if words == '':
-        return 'Translation content cannot be empty！'
+        return _('Translation content cannot be empty！')
     result = _translator.translate(words, source_lang, target_lang, reverse)
     if result:
         # record translation information after each successful translation
