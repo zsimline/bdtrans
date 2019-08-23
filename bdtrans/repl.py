@@ -3,10 +3,9 @@ import sys
 import prompt_toolkit
 from prompt_toolkit.contrib import completers
 
-from bdtrans import baidu
+from bdtrans import lib
 from bdtrans import error
 from bdtrans import deploy
-from bdtrans import common
 from bdtrans._global import _
 
 
@@ -54,13 +53,13 @@ def _check_command(user_input, error_code, nums):
 def _set_lang(user_input):
     cmds = _check_command(user_input, 1101, 3)
     if cmds:
-        baidu.set_lang(cmds[1],cmds[2])
+        lib.set_lang(cmds[1],cmds[2])
 
 
 def _save_result(user_input):
     cmds = _check_command(user_input, 1102, 2)
     if cmds:
-        baidu.save(cmds[1])
+        lib.save(cmds[1])
 
 
 def _execute_command(user_input):
@@ -69,11 +68,11 @@ def _execute_command(user_input):
     """
     command = user_input.split(' ')[0]
     if   command == '/reve':
-        baidu.reverse_lang()
+        lib.reverse_lang()
     elif command == '/rule':
-        baidu.display_rules()
+        lib.display_rules()
     elif command == '/list':
-        common.list_langs()
+        lib.list_langs()
     elif command == '/help':
         _print_help()
     elif command == '/quit':
@@ -93,11 +92,11 @@ def _trans(first, user_input):
     if first[0] == '=':
         # set the target language when the first character is =
         target_lang = user_input.split(' ')[0][1:]
-        if common.check_target_code(target_lang):
+        if lib.check_target_code(target_lang):
             words = ' '.join(user_input.split(' ')[1:])
-            result = baidu.trans(words, 'auto', target_lang)
+            result = lib.trans(words, 'auto', target_lang)
     else:
-        result = baidu.trans(user_input)
+        result = lib.trans(user_input)
     print(result)
 
 

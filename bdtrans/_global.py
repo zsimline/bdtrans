@@ -46,6 +46,6 @@ _ = i18n()
 # Global Profile
 PROFILE = get_profile_path()
 
-# API of Baidu Translation
+# API of  Translation
 API = ('https://api.fanyi.baidu.com/api/trans/vip/translate?'
        'appid=%s&q=%s&from=%s&to=%s&salt=%s&sign=%s')

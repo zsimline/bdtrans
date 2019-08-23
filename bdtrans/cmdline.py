@@ -1,11 +1,10 @@
+#!/usr/bin/env python3
+
 import sys
-sys.path.append('/home/mxsyx/desktop/bdtrans/')
-sys.path.remove('/home/mxsyx/desktop/bdtrans/bdtrans')
 import argparse
 
+from bdtrans import lib
 from bdtrans import repl
-from bdtrans import baidu
-from bdtrans import common
 from bdtrans import deploy
 from bdtrans._global import _
 
@@ -34,9 +33,9 @@ def _print_version():
     sys.exit(0)
 
 
-def _change_info():
+def _change_appid():
     info = deploy.read_info()
-    deploy.change_info(info['appid'], info['secretkey'])
+    deploy.change_appid(info['appid'], info['secretkey'])
     sys.exit(0)
 
 
@@ -56,9 +55,9 @@ def _set_lang(source_lang, target_lang):
     an error message is prompted.
     """
     if  source_lang and target_lang:
-        baidu.set_lang(source_lang, target_lang)
+        lib.set_lang(source_lang, target_lang)
     elif not source_lang and target_lang:
-        baidu.set_lang('auto', target_lang)
+        lib.set_lang('auto', target_lang)
     elif source_lang and not target_lang:
         print(_("Can't just specify the source language !"))
         sys.exit(0)
@@ -105,15 +104,15 @@ def _get_parser():
 
 def _io_trans(input_file, output_file, quiet):
     if  input_file and not output_file:
-        baidu.io_trans(input_file, None, quiet) 
+        lib.io_trans(input_file, None, quiet) 
     else:
-        baidu.io_trans(input_file, output_file, quiet) 
+        lib.io_trans(input_file, output_file, quiet) 
     sys.exit(0)
 
 
 def _trans(words, output_file, quiet=False):
     words = ' '.join(words)
-    result = baidu.trans(words)
+    result = lib.trans(words)
     if output_file:
         with open(output_file, 'w') as f:
             f.write(result)
@@ -121,7 +120,7 @@ def _trans(words, output_file, quiet=False):
         print(result)
 
 
-if __name__ == '__main__':
+def start_cmd():
     parser = _get_parser()
     arguments = parser.parse_known_args()
     args = arguments[0]
@@ -136,7 +135,7 @@ if __name__ == '__main__':
     if args.init:
         _initialize_app()
     if args.changeinfo:
-        _change_info()
+        _change_appid()
     if args.changelang:
         _change_lang()
     if args.shell:

@@ -1,6 +1,6 @@
 import json
 
-from bdtrans import common
+from bdtrans import lib
 from bdtrans import language
 from bdtrans._global import _
 from bdtrans._global import PROFILE
@@ -19,7 +19,7 @@ def setup(appid, secretkey, source_lang, target_lang):
         print(_('\nYour profile is located at %s') % PROFILE)
 
 
-def change_info(appid ,secretkey):
+def change_appid(appid ,secretkey):
     config = None
     with open(PROFILE, 'r') as f:
         config = json.load(f)
@@ -65,14 +65,14 @@ def read_lang():
         if source_lang is '':
             source_lang = language.DEFAULT_SOURCE_LANG
             break
-        if common.check_source_code(source_lang):
+        if lib.check_source_code(source_lang):
             break
     while(True):
         target_lang = input(_('please enter the target language code: '))
         if target_lang is '':
             target_lang =  language.DEFAULT_TARGET_LANG
             break
-        if common.check_target_code(target_lang):
+        if lib.check_target_code(target_lang):
             break
     return{'source_lang': source_lang, 'target_lang':target_lang}
 
@@ -87,7 +87,7 @@ def initialize_app():
     print(_('\nAnd, it is recommended that you specify common '
            'source and target languages.   \n\nThe following '
            'language codes are legal:\n'))
-    common.list_langs()
+    lib.list_langs()
     print(_('If you press Enter directly, the default source or '
            'target language will be specified.\n'))
     

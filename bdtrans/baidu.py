@@ -1,142 +1,130 @@
-import os
-import sys
-import time
+"""
+The translate model is defined here.
+"""
 import json
+import random
+import hashlib
+from urllib import request
 
-from bdtrans import model
-from bdtrans import deploy
-from bdtrans import common
+from bdtrans import error
 from bdtrans import _global
-from bdtrans._global import _
 
 
-_translator = None
-_trans_hisory = {}
+class Translate(object):
+    api = _global.API
 
+    def __init__(self):
+        config = None
+        _profile = _global.PROFILE
+        with open(_profile, 'r') as f:
+            config = json.load(f)
+        self.appid = config['APPID']
+        self.secretkey = config['SECRETKEY']
+        self.source_lang = config['SOURCE_LANG']
+        self.target_lang = config['TARGET_LANG']
 
-def display_rules():
-    """
-    Display current translation rules.
-    """
-    rules = _translator.get_rules()
-    print(_('current source language: %s') % rules[0])
-    print(_('current target language: %s') % rules[1])
+    def set_source(self, code):
+        self.source_lang = code
 
+    def set_target(self, code):
+        self.target_lang = code
 
-def set_lang(source_lang, target_lang):
-    """
-    Setting source language code and target language code,
-    the program will validate the user-specified language code.
-    
-    Args:
-        source_lang
-            source language code
-        target_lang
-            target language code
-    """
-    if common.check_source_code(source_lang):
-        _translator.set_source(source_lang)
-    if common.check_target_code(target_lang):
-        _translator.set_target(target_lang)
+    def get_rules(self):
+        """
+        Returns a tuple containing the current translation rules.
+        """
+        return (self.source_lang, self.target_lang)
 
+    def reverse_lang(self):
+        """
+        Inversion of Source Language and Target Language.
+        """
+        temp = self.source_lang
+        self.source_lang = self.target_lang
+        self.target_lang = temp
 
-def _record_words(source, result):
-    """
-    After each successful translation, the program
-    will records the translation results.
-    """
-    _trans_hisory[source] = result
+    def _set_query(self, words):
+        self.query = words
+ 
+    def _make_salt(self):
+        """
+        Generate and return a random number 
+        between 32768 and 65536.
+        """
+        return str(random.randint(32768, 65536))
 
+    def _make_sign(self, salt):
+        """
+        Generate and return a signature by salt.
+        """
+        sign = '%s%s%s%s' % (
+            self.appid,self.query,salt,self.secretkey)
+        md5obj = hashlib.md5() 
+        md5obj.update(sign.encode('UTF-8'))
+        return md5obj.hexdigest()
 
-def reverse_lang():
-    """
-    Reverse translation rules and display 
-    rules after inversion.
-    """
-    _translator.reverse_lang()
-    display_rules()
+    def _api_request(self, url):
+        """
+        Send the request to the server and return 
+        the response of the server.
+        """
+        try:
+            return request.urlopen(url)
+        except error.ConnectError:
+            # Capture exception if network connection fails
+            print(_global._('2201 Network not connected'))
+        except KeyboardInterrupt:
+            pass
 
+    def _parse_response(self, response):
+        """
+        Extraction of translation results.
+        The server will return a JSON string.
 
-def save(file_name):
-    """
-    Save translation results.
-    Args:
-        file_name
-            The output file you must specified   
-    
-    The translation results will be saved in two formats.
-    One is plain text format containing only the target language
-    for translation. The other is JSON format that contains both
-    source and target languages.
-    """
-    try:
-        with open('%s.%s' % (file_name,'txt'), 'w') as f:
-            f.write('\n'.join(_trans_hisory))
-        with open('%s.%s' % (file_name,'json'), 'w') as f:
-            json.dump(_trans_hisory, f, ensure_ascii=False)
-        print(_('Save translation results successfully！'))
-        print(_('TEXT file is stored in %s') % '%s.%s' % (file_name,'txt'))
-        print(_('JSON file is stored in %s') % '%s.%s' % (file_name,'json'))
-    except Exception as e:
-        print(_('Save translation results failed! %s') % e)
+        When the translation fails, the server will return
+        a JSON string containing error_code, through which
+        we can know what error has occurred.
+        """
+        content = response.read()
+        content_text = content.decode('UTF-8')
+        original = json.loads(content_text)
+        try:
+            return original['trans_result'][0]['dst']
+        except KeyError:
+        # Capture exception if parsing translation results fails
+            try:
+                raise error.TranslationError()
+            except error.TranslationError as e:
+                e.display_msg(original['error_code'])           
 
+    def _package_words(self, words, source_lang, target_lang, reverse):
+        """
+        Encapsulating URL based on parameter values.
+        """
+        self._set_query(words)
+        salt = self._make_salt()
+        sign = self._make_sign(salt)
+        
+        # the values of source_lang and target_lang
+        # will override the default translation rules.
+        source_lang_ = self.source_lang
+        target_lang_ = self.target_lang
+        if source_lang:
+            source_lang_ = source_lang
+        if target_lang:
+            target_lang_ = target_lang
+        if reverse:
+            temp = source_lang_
+            source_lang_ = target_lang_
+            target_lang_ = temp
 
-def trans(words, source_lang=None, target_lang=None, reverse=False):
-    """
-    Translate sentences, returns the translation result.
-    Args:
-        words  sentences you want to translate（unnullable string）
-        source_lang  source language code, only in this translation.
-        target_lang  target language code, only in this translation.
-        reverse  whether to reverse the rules of translation.
-    """
-    if words == '':
-        return _('Translation content cannot be empty！')
-    result = _translator.translate(words, source_lang, target_lang, reverse)
-    if result:
-        # record translation information after each successful translation
-        _record_words(words, result)
-        return result
-    else:
-        return ''
+        param = (self.appid,request.quote(self.query),
+                 source_lang_,target_lang_,salt,sign)
+        return self.api % param
 
-
-def io_trans(input_file, output_file=None, quiet=False):
-    """
-    Translation from Documents.
-
-    Args:
-        input_file
-            You should specify an input file, the program will
-            read sentences from the file you specify.
-        output_file
-            If the output file is specified, the program saves
-            the translation results in the output file.
-        quiet
-            If you don't want to display information on the console,
-            please set quiet to True.
-    """
-    lines = None
-    results = []
-    with open(input_file, 'r') as f:
-        lines = f.readlines()
-    print(_('%s lines in total') % len(lines))
-    for i in range(1, len(lines)):
-        if lines[i] == '\n':
-            continue
-        result = trans(lines[i])
-        results.append(result)
-        if not quiet:
-            print(result)
-        time.sleep(1)
-    if output_file:
-        with open(output_file, 'w') as f:
-            f.write('\n'.join(results))
-    print(_('\nAll lines have been translated.'))
-
-
-if not os.path.isfile(_global.PROFILE):
-    # Initialize APP for first use
-    deploy.initialize_app()
-
-_translator = model.Translate()
+    def translate(self, words, source_lang, target_lang, reverse):
+        response = None
+        url = self._package_words(words, source_lang, target_lang, reverse)
+        response = self._api_request(url)
+        if response is not None:
+            return self._parse_response(response)

@@ -18,46 +18,46 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "Language: zh_CN\n"
 
-#: baidu.py:21
+#: lib.py:21
 #, python-format
 msgid "current source language: %s"
 msgstr "当前源语言：%s"
 
-#: baidu.py:22
+#: lib.py:22
 #, python-format
 msgid "current target language: %s"
 msgstr "当前目标语言：%s"
 
-#: baidu.py:76
+#: lib.py:76
 msgid "Save translation results successfully！"
 msgstr "保存翻译结果成功！"
 
-#: baidu.py:77
+#: lib.py:77
 #, python-format
 msgid "TEXT file is stored in %s"
 msgstr "TEXT文件存储在 %s"
 
-#: baidu.py:78
+#: lib.py:78
 #, python-format
 msgid "JSON file is stored in %s"
 msgstr "JSON文件存储在 %s"
 
-#: baidu.py:80
+#: lib.py:80
 #, python-format
 msgid "Save translation results failed! %s"
 msgstr "保存翻译结果失败！%s"
 
-#: baidu.py:92
+#: lib.py:92
 #, python-format
 msgid "Translation content cannot be empty！"
 msgstr "翻译内内容不能为空！"
 
-#: baidu.py:122
+#: lib.py:122
 #, python-format
 msgid "%s lines in total"
 msgstr "总共 %s 行"
 
-#: baidu.py:134
+#: lib.py:134
 msgid ""
 "\n"
 "All lines have been translated."
@@ -65,63 +65,63 @@ msgstr ""
 "\n"
 "已经翻译完毕所有行。"
 
-#: bdtrans.py:58
+#: cmdline.py:58
 msgid "Can't just specify the source language !"
 msgstr "不可以只指定源语言！"
 
-#: bdtrans.py:71
+#: cmdline.py:71
 msgid "show this message and exit"
 msgstr "显示帮助信息"
 
-#: bdtrans.py:73
+#: cmdline.py:73
 msgid "show program's version number and exit"
 msgstr "显示程序版本"
 
-#: bdtrans.py:75
+#: cmdline.py:75
 msgid "check for upgrade of this program"
 msgstr "检测程序更新"
 
-#: bdtrans.py:77
+#: cmdline.py:77
 msgid "show reference table of languages and exit"
 msgstr "打印语言列表"
 
-#: bdtrans.py:79
+#: cmdline.py:79
 msgid "do not print translation results to the console"
 msgstr "不在控制台上输出翻译结果"
 
-#: bdtrans.py:81
+#: cmdline.py:81
 msgid "start an interactive shell"
 msgstr "启动交互式翻译环境"
 
-#: bdtrans.py:83
+#: cmdline.py:83
 msgid "specify the source language"
 msgstr "指定源语言"
 
-#: bdtrans.py:85
+#: cmdline.py:85
 msgid "specify the target language"
 msgstr "指定目标语言"
 
-#: bdtrans.py:87
+#: cmdline.py:87
 msgid "specify the input file"
 msgstr "指定输入文件"
 
-#: bdtrans.py:89
+#: cmdline.py:89
 msgid "specify the output file"
 msgstr "指定输出文件"
 
-#: bdtrans.py:91
+#: cmdline.py:91
 msgid "follow the wizard to initialize app"
 msgstr "按照向导初始化APP"
 
-#: bdtrans.py:93
+#: cmdline.py:93
 msgid "change AppID in configuration file"
 msgstr "改变配置文件中的AppID"
 
-#: bdtrans.py:95
+#: cmdline.py:95
 msgid "change translation rules in configuration file"
 msgstr "改变配置文件中的翻译规则"
 
-#: common.py:76
+#: lib.py:76
 msgid ""
 "\n"
 "Invalid source code!\n"
@@ -129,7 +129,7 @@ msgstr ""
 "\n"
 "非法的源语言代码！\n"
 
-#: common.py:87
+#: lib.py:87
 msgid ""
 "\n"
 "Target code can not be auto!!!\n"
@@ -137,7 +137,7 @@ msgstr ""
 "\n"
 "目标语言代码不可以为自动自检！！！\n"
 
-#: common.py:89
+#: lib.py:89
 msgid ""
 "\n"
 "Invalid target code!\n"
