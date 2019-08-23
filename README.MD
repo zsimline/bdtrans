@@ -4,13 +4,10 @@
 
 *你不仅可以在Python脚本文件或解释器中使用它，也可以在终端下通过命令行工具使用它。*
 
-<br>
-
 ### 安装
 
 你可以直接使用Python包管理工具来安装它： **`pip install bdtrans`**
 <br>你也可以下载源码包，解压后运行安装文件： **`python setup.py insatll`**
-
 
 ### 使用方式
 
