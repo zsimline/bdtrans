@@ -5,7 +5,7 @@ with open('README.md', 'r') as f:
 
 setuptools.setup(
     name = 'bdtrans',
-    version = '0.2.8',
+    version = '0.3.0',
     author = 'Mxsyx',
     author_email = 'zsimline@163.com',
     description = 'A library for china baidu translation',
