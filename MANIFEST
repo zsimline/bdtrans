@@ -1,1 +1,0 @@
-msgfmt -o locale/zh_CN/LC_MESSAGES/translate.mo zh_CN.po

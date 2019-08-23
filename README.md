@@ -1,76 +1,41 @@
 # bdtrans
-A library for baidu translation
+### 一个用于百度翻译的Python包
 
-开发：
+注意：你不仅可以在Python脚本文件或交互式环境中使用它，也可以在终端下通过命令行工具使用它。
 
-    -h, --help
-        show this help message and exit
-        显示此帮助消息并退出
 
-    -v, --version
-        show program's version number and exit
-        显示程序的版本号并退出
+# 使用方式
+
+>首先，你应该去百度翻译的[官网](http://api.fanyi.baidu.com/)上注册一个账户，并取得百度翻译API的appid与秘钥。
+
+### 模块函数
+
++ **trans(words, source_lang=None, target_lang=None, reverse=False)**
+
+    作用：翻译用户给定的句子，输出翻译结果。
+
+|参数|含义|
+|:----|:----|
+|words|你想要翻译的句子|
+|source_lang|源语言代码（非必须）|
+|target_lang|目标语言代码（非必须）|
+|reverse|是否反转源语言与目标语言|
+
+```python
+>>> import bdtrans
+bdtrans.trans('Hello, boy!','en','zh')
+```
+输出：你好，男孩！
+   
+<br>
+
++ **io_trans(input_file, output_file=None, quiet=False)**
     
-    -u, --upgrade
-        check for upgrade of this program
-        检查此程序的升级
-    
-    -l, --list
-        show reference table of languages and exit
-        显示语言参考表并退出
-    
-    -S, --shell
-        start an interactive shell.
-        启动交互式shell
+    作用：从文件读取翻译内容，如果指定了输出文件，翻译结果将被存储到输出文件中。
 
-    -r --raw
-        show raw API response instead.
-        显示原始API响应
+|参数|含义|
+|:----|:----|
+|input_file|输入文件名|
+|output_file|输出文件名|
+|quiet|是否关闭控制台输出|
 
-    -s CODE, --source CODE
-        specify the source language
-        指定源语言
-
-    -t CODE, --target CODE
-        specify the target language
-        指定目标语言
-
-    -i FILENAME, --input FILENAME
-        specify the input file
-        指定输入文件
-
-    -o FILENAME, --output FILENAME
-        specify the output file
-        指定输出文件
-    
-语言列表：
-
-zh	中文
-en	英语
-yue	粤语
-wyw	文言文
-jp	日语
-kor	韩语
-fra	法语
-spa	西班牙语
-th	泰语
-ara	阿拉伯语
-ru	俄语
-pt	葡萄牙语
-de	德语
-it	意大利语
-el	希腊语
-nl	荷兰语
-pl	波兰语
-bul	保加利亚语
-est	爱沙尼亚语
-dan	丹麦语
-fin	芬兰语
-cs	捷克语
-rom	罗马尼亚语
-slo	斯洛文尼亚语
-swe	瑞典语
-hu	匈牙利语
-cht	繁体中文
-vie	越南语
-auto 自动检测

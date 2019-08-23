@@ -6,8 +6,9 @@ import platform
 
 def i18n():
     app_name = 'translate'
-    local_dir = os.path.abspath("locale")
-    gettext.bindtextdomain(app_name, local_dir)
+    dir_name =  os.path.dirname(__file__)
+    locale_dir = os.path.abspath('%s/%s' % (dir_name,'/locale'))
+    gettext.bindtextdomain(app_name, locale_dir)
     gettext.textdomain(app_name)
     return gettext.gettext
 
