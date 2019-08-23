@@ -9,7 +9,7 @@ from bdtrans import deploy
 from bdtrans._global import _
 
 
-__version__ = '0.3.0'
+__version__ = '0.3.2'
 
 
 def _print_help(parser):
@@ -21,7 +21,7 @@ def _print_help(parser):
 
 
 def _print_langs():
-    common.list_langs()
+    lib.list_langs()
     sys.exit(0)
 
 
