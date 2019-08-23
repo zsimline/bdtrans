@@ -9,7 +9,7 @@
 ### 安装
 
 你可以直接使用Python包管理工具来安装它： **`pip install bdtrans`**
-你也可以下载源码包，解压后运行安装文件： **`python setup.py insatll`**
+<br>你也可以下载源码包，解压后运行安装文件： **`python setup.py insatll`**
 
 
 ### 使用方式
