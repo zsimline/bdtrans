@@ -532,4 +532,4 @@ msgstr "再见！"
 
 #: repl.py:122
 msgid "To exit, type /quit"
-msgstr "键入  /quit 退出交互环境"
+msgstr "键入 /quit 退出交互环境"

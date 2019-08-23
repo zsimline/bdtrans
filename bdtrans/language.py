@@ -14,7 +14,7 @@ class Code(object):
     cs = 'cs'
     jp = 'jp'
     th = 'th'
-    ry = 'ru'
+    ru = 'ru'
     pt = 'pt'
     el = 'el'
     nl = 'nl'
