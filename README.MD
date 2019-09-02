@@ -143,7 +143,7 @@ user@host:$ bdtrans 德玛西亚万岁
 user@host:$ Long live Demasia
 user@host:$ bdtrans -t ara 德玛西亚万岁
 user@host:$ فيفا دي مارسيا
-user@host:$ bdtrans -s 德玛西亚万岁
+user@host:$ bdtrans -s zh 德玛西亚万岁
 user@host:$ 不可以只指定源语言！
 ```
 
