@@ -11,6 +11,6 @@ from bdtrans.deploy  import change_appid
 from bdtrans.deploy  import initialize_app
 
 
-__version__ = '0.3.2'
+__version__ = '0.4.0'
 __all__ = ['save', 'trans','set_lang','list_langs','reverse_lang',
     'display_rules','initialize_app','change_lang','change_appid',]

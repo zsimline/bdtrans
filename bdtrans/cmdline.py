@@ -9,7 +9,7 @@ from bdtrans import deploy
 from bdtrans._global import _
 
 
-__version__ = '0.3.2'
+__version__ = '0.4.0'
 
 
 def _print_help(parser):

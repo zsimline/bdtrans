@@ -1,11 +1,11 @@
 import setuptools
 
-with open('README.MD', 'r') as f:
+with open('README.md', 'r') as f:
     long_description = f.read()
 
 setuptools.setup(
     name = 'bdtrans',
-    version = '0.3.2',
+    version = '0.4.0',
     author = 'Mxsyx',
     author_email = 'zsimline@163.com',
     description = 'A library for china baidu translation',

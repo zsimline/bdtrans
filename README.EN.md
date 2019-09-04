@@ -115,7 +115,7 @@ Follow the wizard to initialize APP.
 
 #### Option
 
-|parameter|meaning|
+|option|meaning|
 |:----|:----|
 |-h, --help|display help message|
 |-v, --version|display program version|
@@ -131,7 +131,7 @@ Follow the wizard to initialize APP.
 
 #### Options in an interactive environment
 
-|parameter|meaning|
+|option|meaning|
 |:----|:----|
 |/reve|inversion of source language and target language|
 |/rule|display current translation rules|
@@ -191,21 +191,3 @@ user@host:$ You cannot specify only the source language.
 |cht|traditional chinese|
 |vie|vietnamese|
 |auto|automatic detection|
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
